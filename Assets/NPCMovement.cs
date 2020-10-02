@@ -9,6 +9,8 @@ public class NPCMovement : MonoBehaviour
     public float speedIncrease = 1;
     public float walkRadius = 5;
     public bool DoWaypoints = true;
+    public bool startChase = false;
+    public GameObject player;
 
     void Start()
     {
@@ -20,9 +22,12 @@ public class NPCMovement : MonoBehaviour
         if (DoWaypoints == true)
         {
             float dist = GetComponent<NavMeshAgent>().remainingDistance;
-            if (dist != Mathf.Infinity && GetComponent<NavMeshAgent>().pathStatus == NavMeshPathStatus.PathComplete && GetComponent<NavMeshAgent>().remainingDistance < 5)//Arrived.
+            if (startChase)
             {
-                Debug.Log("Ägent has arrived");
+                Chase();
+            }
+            else if (dist != Mathf.Infinity && GetComponent<NavMeshAgent>().pathStatus == NavMeshPathStatus.PathComplete && GetComponent<NavMeshAgent>().remainingDistance < 5)//Arrived.
+            {
                 Wonder();
             }
         }
@@ -35,5 +40,18 @@ public class NPCMovement : MonoBehaviour
         NavMesh.SamplePosition(randomDirection, out hit, walkRadius, 1);
         Vector3 finalPosition = hit.position;
         GetComponent<NavMeshAgent>().destination = finalPosition;
+    }
+    void Chase()
+    {
+        GetComponent<NavMeshAgent>().destination = player.transform.position;
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Enter collision with player");
+            startChase = true;
+            //other.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * 1000.0f);
+        }
     }
 }
