@@ -166,8 +166,7 @@ public class FPSWalkerEnhanced : MonoBehaviour
             }
             else if (m_JumpTimer >= m_AntiBunnyHopFactor)
             {
-                m_MoveDirection.y = m_JumpSpeed;
-                m_JumpTimer = 0;
+                Jump();
             }
         }
         else
@@ -194,8 +193,14 @@ public class FPSWalkerEnhanced : MonoBehaviour
         // Move the controller, and set grounded true or false depending on whether we're standing on something
         m_Grounded = (m_Controller.Move(m_MoveDirection * Time.deltaTime) & CollisionFlags.Below) != 0;
     }
- 
- 
+
+    public void Jump()
+    {
+        m_MoveDirection.y = m_JumpSpeed;
+        m_JumpTimer = 0;
+    }
+
+
     // Store point that we're in contact with for use in FixedUpdate if needed
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
