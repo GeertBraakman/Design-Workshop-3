@@ -51,7 +51,8 @@ public class NPCMovement : MonoBehaviour
         {
             Debug.Log("Enter collision with player");
             startChase = true;
-            //other.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * 1000.0f);
+            //other.gameObject.transform.Translate(Vector3.up * Time.deltaTime * 1000);
+            //other.gameObject.GetComponent<FPSWalkerEnhanced>().Jump();
         }
     }
 }
